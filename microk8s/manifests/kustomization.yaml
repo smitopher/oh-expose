@@ -1,0 +1,6 @@
+resources:
+  - openhab.yaml
+  - openhab-pvc.yaml
+  - mosquitto.yaml
+  - influxdb.yaml
+  - grafana.yaml

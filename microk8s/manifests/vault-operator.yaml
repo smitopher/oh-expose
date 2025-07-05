@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-operator
+  labels:
+    app: vault-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault-operator
+  template:
+    metadata:
+      labels:
+        app: vault-operator
+    spec:
+      containers:
+      - name: operator
+        image: hashicorp/vault-k8s:latest

@@ -43,15 +43,13 @@ kind: Service
 metadata:
   name: openhab
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: openhab
   ports:
   - name: http
     port: 8080
     targetPort: 8080
-    nodePort: 30080
   - name: https
     port: 8443
     targetPort: 8443
-    nodePort: 30443

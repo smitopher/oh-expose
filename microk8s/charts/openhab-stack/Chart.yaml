@@ -1,0 +1,4 @@
+apiVersion: v2
+name: openhab-stack
+version: 0.1.0
+description: Helm chart to deploy OpenHAB and supporting applications on microk8s

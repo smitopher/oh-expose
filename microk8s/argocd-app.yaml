@@ -8,7 +8,9 @@ spec:
   source:
     repoURL: https://github.com/yourname/oh-expose.git
     targetRevision: HEAD
-    path: microk8s/manifests
+    path: microk8s/charts/openhab-stack
+    helm:
+      releaseName: openhab-stack
   destination:
     server: https://kubernetes.default.svc
     namespace: default

@@ -1,6 +1,6 @@
 # OpenHAB on microk8s
 
-This directory contains Kubernetes manifests to deploy OpenHAB and supporting
+This directory contains a Helm chart to deploy OpenHAB and supporting
 applications on a local [microk8s](https://microk8s.io/) cluster.
 
 ## Components
@@ -26,7 +26,11 @@ Prometheus via the `ServiceMonitor` in this repository.
    sudo snap install microk8s --classic
    microk8s status --wait-ready
    ```
-2. Enable the necessary add-ons **one at a time** so microk8s has a chance to
+1. Symlink the microk8s Helm client so the `helm` command is available:
+   ```bash
+   sudo ln -s $(which microk8s.helm) /usr/local/bin/helm
+   ```
+1. Enable the necessary add-ons **one at a time** so microk8s has a chance to
    configure each component:
    ```bash
    microk8s enable cert-manager        # automatic certificate management
@@ -38,16 +42,13 @@ Prometheus via the `ServiceMonitor` in this repository.
    microk8s enable observability       # Prometheus and Grafana stack
    microk8s enable olm                 # Operator Lifecycle Manager
    ```
-3. Deploy the manifests:
-   * Directly with `kubectl`:
-     ```bash
-     microk8s kubectl apply -k manifests
-     ```
-   * Using [Argo CD](https://argo-cd.readthedocs.io/):
-     ```bash
-     microk8s kubectl apply -f argocd-app.yaml
-     ```
-4. Access services:
+1. Deploy the stack with Helm:
+   ```bash
+   helm install openhab-stack microk8s/charts/openhab-stack
+   ```
+   Or deploy with [Argo CD](https://argo-cd.readthedocs.io/) using
+   `argocd-app.yaml`.
+1. Access services:
    - OpenHAB UI: <http://openhab.local>
 
 Map the `openhab.local` hostname to the IP address of your microk8s host or

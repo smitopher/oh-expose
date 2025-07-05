@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-operator
+  labels:
+    app: postgres-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-operator
+  template:
+    metadata:
+      labels:
+        app: postgres-operator
+    spec:
+      containers:
+      - name: operator
+        image: registry.opensource.zalan.do/acid/postgres-operator:v1.10.0

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openhab
+  labels:
+    app: openhab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openhab
+  template:
+    metadata:
+      labels:
+        app: openhab
+    spec:
+      containers:
+      - name: openhab
+        image: openhab/openhab:latest
+        ports:
+        - containerPort: 8080
+        - containerPort: 8443
+        volumeMounts:
+        - name: openhab-conf
+          mountPath: /openhab/conf
+        - name: openhab-userdata
+          mountPath: /openhab/userdata
+        - name: openhab-addons
+          mountPath: /openhab/addons
+      volumes:
+      - name: openhab-conf
+        persistentVolumeClaim:
+          claimName: openhab-conf
+      - name: openhab-userdata
+        persistentVolumeClaim:
+          claimName: openhab-userdata
+      - name: openhab-addons
+        persistentVolumeClaim:
+          claimName: openhab-addons
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openhab
+spec:
+  type: ClusterIP
+  selector:
+    app: openhab
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  - name: https
+    port: 8443
+    targetPort: 8443

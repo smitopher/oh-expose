@@ -1,0 +1,3 @@
+openhab:
+  image: openhab/openhab:latest
+  ingressHostname: openhab.local

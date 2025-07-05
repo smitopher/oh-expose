@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-operator
+  labels:
+    app: keycloak-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-operator
+  template:
+    metadata:
+      labels:
+        app: keycloak-operator
+    spec:
+      containers:
+      - name: operator
+        image: quay.io/keycloak/keycloak-operator:latest

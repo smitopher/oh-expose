@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb-operator
+  labels:
+    app: influxdb-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb-operator
+  template:
+    metadata:
+      labels:
+        app: influxdb-operator
+    spec:
+      containers:
+      - name: operator
+        image: quay.io/influxdata/influxdb-operator:latest

@@ -55,3 +55,9 @@ Prometheus via the `ServiceMonitor` in this repository.
 
 Map the `openhab.local` hostname to the IP address of your microk8s host or
 adjust the Ingress definition with your preferred hostname.
+
+## Securing the Kubernetes Dashboard
+
+MicroK8s ships with the Kubernetes Dashboard add-on. To authenticate against
+Keycloak using OIDC, follow the steps in
+[dashboard-keycloak.md](dashboard-keycloak.md).

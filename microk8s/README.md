@@ -1,7 +1,9 @@
 # OpenHAB on microk8s
 
 This directory contains a Helm chart to deploy OpenHAB and supporting
-applications on a local [microk8s](https://microk8s.io/) cluster.
+applications on a local [microk8s](https://microk8s.io/) cluster. Operators are
+managed by the Operator Lifecycle Manager (OLM), which must be installed
+manually as microk8s does not provide an OLM add-on.
 
 ## Components
 
@@ -40,8 +42,8 @@ Prometheus via the `ServiceMonitor` in this repository.
    microk8s enable registry            # local image registry
    microk8s enable ingress             # NGINX Ingress controller
    microk8s enable observability       # Prometheus and Grafana stack
-   microk8s enable olm                 # Operator Lifecycle Manager
    ```
+1. Install the Operator Lifecycle Manager manually. Follow the [OLM installation guide](https://github.com/operator-framework/operator-lifecycle-manager#installing-olm).
 1. Deploy the stack with Helm:
    ```bash
    helm install openhab-stack microk8s/charts/openhab-stack

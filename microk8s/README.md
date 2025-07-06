@@ -13,7 +13,7 @@ manually as microk8s does not provide an OLM add-on.
 - **PostgreSQL** – relational database used by OpenHAB
 - **Keycloak** – identity and access management
 - **HashiCorp Vault** – secrets management
-- Operators for PostgreSQL, Keycloak and Vault (managed by OLM)
+- Operators for PostgreSQL, Keycloak, Vault and InfluxDB (managed by OLM)
 
 Persistent storage is provided via `PersistentVolumeClaim`s. The OpenHAB web
 interface is exposed through an Ingress provided by the microk8s `ingress`

@@ -3,7 +3,8 @@
 This repository contains configuration to deploy [OpenHAB](https://www.openhab.org/)
 and supporting applications (Mosquitto, InfluxDB, PostgreSQL, Keycloak and
 HashiCorp Vault) on a local [microk8s](https://microk8s.io/) cluster. Their
-operators are installed through the Operator Lifecycle Manager (OLM). The
+operators are installed through the Operator Lifecycle Manager (OLM), which
+must be installed manually. The
 deployment is packaged as a Helm chart under [`microk8s/charts/openhab-stack`](microk8s/charts/openhab-stack).
 
 ## Getting Started
@@ -21,8 +22,8 @@ deployment is packaged as a Helm chart under [`microk8s/charts/openhab-stack`](m
    - `registry` – local container image registry
    - `ingress` – NGINX Ingress controller for exposing services
    - `observability` – Prometheus/Grafana stack for metrics
-   - `olm` – Operator Lifecycle Manager for operators
-4. Deploy the stack with Helm or use the provided Argo CD Application:
+4. Install the Operator Lifecycle Manager manually, as microk8s does not provide an OLM add-on. Follow the [OLM installation guide](https://github.com/operator-framework/operator-lifecycle-manager#installing-olm).
+5. Deploy the stack with Helm or use the provided Argo CD Application:
    ```bash
    helm install openhab-stack microk8s/charts/openhab-stack
    ```

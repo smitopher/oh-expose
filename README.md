@@ -11,9 +11,11 @@ deployment is packaged as a Helm chart under [`microk8s/charts/openhab-stack`](m
 
 1. Install microk8s and ensure it is running.
 2. Symlink the microk8s Helm client so the `helm` command is available:
+
    ```bash
    sudo ln -s $(which microk8s.helm) /usr/local/bin/helm
    ```
+
 3. Enable the following add-ons **one at a time**:
    - `cert-manager` – manages TLS certificates
    - `dashboard` – provides the Kubernetes dashboard web UI
@@ -22,11 +24,52 @@ deployment is packaged as a Helm chart under [`microk8s/charts/openhab-stack`](m
    - `registry` – local container image registry
    - `ingress` – NGINX Ingress controller for exposing services
    - `observability` – Prometheus/Grafana stack for metrics
-4. Install the Operator Lifecycle Manager manually, as microk8s does not provide an OLM add-on. Follow the [OLM installation guide](https://github.com/operator-framework/operator-lifecycle-manager#installing-olm).
+4. Install the Operator Lifecycle Manager manually, as microk8s does not provide
+   an OLM add-on. Follow the
+   [OLM installation guide](https://github.com/operator-framework/operator-lifecycle-manager#installing-olm).
 5. Deploy the stack with Helm or use the provided Argo CD Application:
+
    ```bash
    helm install openhab-stack microk8s/charts/openhab-stack
    ```
+
    Alternatively apply `microk8s/argocd-app.yaml` if using Argo CD.
 
 See [`microk8s/README.md`](microk8s/README.md) for detailed instructions.
+
+## Cloudflare Tunnels
+
+To expose services through Cloudflare's network, you can run a Cloudflare Tunnel
+using the `cloudflared` daemon.
+
+1. Authenticate with your Cloudflare account:
+
+   ```bash
+   cloudflared login
+   ```
+
+2. Create a named tunnel:
+
+   ```bash
+   cloudflared tunnel create my-tunnel
+   ```
+
+3. Map a DNS record to the tunnel:
+
+   ```bash
+   cloudflared tunnel route dns my-tunnel example.com
+   ```
+
+4. Start the tunnel:
+
+   ```bash
+   cloudflared tunnel run my-tunnel
+   ```
+
+For a quick, temporary connection you can use:
+
+```bash
+cloudflared tunnel --url http://localhost:8080
+```
+
+Once a tunnel is created and configured, starting `cloudflared` will connect it automatically.

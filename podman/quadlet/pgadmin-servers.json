@@ -1,0 +1,18 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Postgres",
+      "Group": "Servers",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "keycloak",
+      "Username": "keycloak",
+      "ConnectionParameters": {
+        "sslmode": "verify-full",
+        "sslrootcert": "/etc/letsencrypt/live/cjssolutions.com/fullchain.pem",
+        "sslcert": "/etc/letsencrypt/live/cjssolutions.com/cert.pem",
+        "sslkey": "/etc/letsencrypt/live/cjssolutions.com/privkey.pem"
+      }
+    }
+  }
+}

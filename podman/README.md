@@ -8,7 +8,7 @@ Sample configuration for running OpenHAB, Keycloak, Postgres, pgAdmin, Nginx, an
    ```bash
    ./create-resources.sh
    ```
-2. Copy quadlet files in `quadlet/` to `/etc/containers/systemd/` (or the user equivalent) and run:
+2. Copy quadlet files in `quadlet/` and their corresponding `.env` files to `/etc/containers/systemd/` (or the user equivalent) and run:
    ```bash
    systemctl daemon-reload
    systemctl enable --now nginx.service keycloak.service postgres.service pgadmin.service
@@ -17,6 +17,6 @@ Sample configuration for running OpenHAB, Keycloak, Postgres, pgAdmin, Nginx, an
    ```bash
    sudo systemctl enable --now cloudflared
    ```
-4. Mount your Let's Encrypt certificates at `/etc/letsencrypt` on the host so they are available to the Nginx container.
-5. Update placeholders such as database passwords, tunnel ID, and Cloudflare token before starting the services.
+4. Mount your Let's Encrypt certificates at `/etc/letsencrypt` on the host so they are available to the Nginx, Keycloak, and pgAdmin containers.
+5. Update the values in the `.env` files (e.g., database passwords, tunnel ID, and Cloudflare token) before starting the services.
 6. Import `keycloak/realm-export.json` into Keycloak to preconfigure clients and WebAuthn policy.

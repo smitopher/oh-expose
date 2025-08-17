@@ -6,8 +6,9 @@ Image=dpage/pgadmin4:latest
 AutoUpdate=registry
 Network=internal-net
 Volume=pgadmin-data:/var/lib/pgadmin
-Environment=PGADMIN_DEFAULT_EMAIL=admin@cjssolutions.com
-Environment=PGADMIN_DEFAULT_PASSWORD=change_me
+Volume=/etc/letsencrypt:/etc/letsencrypt:ro
+Volume=%d/pgadmin-servers.json:/pgadmin4/servers.json:ro
+EnvironmentFile=%d/pgadmin.env
 
 [Install]
 WantedBy=multi-user.target

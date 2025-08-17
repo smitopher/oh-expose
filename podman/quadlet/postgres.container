@@ -6,7 +6,11 @@ Image=postgres:16
 AutoUpdate=registry
 Network=internal-net
 Volume=pgdata:/var/lib/postgresql/data:Z
+Volume=/etc/letsencrypt:/etc/letsencrypt:ro
+Volume=%d/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+Volume=%d/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
 EnvironmentFile=%d/postgres.env
+Command=postgres -c config_file=/etc/postgresql/postgresql.conf
 
 [Install]
 WantedBy=multi-user.target

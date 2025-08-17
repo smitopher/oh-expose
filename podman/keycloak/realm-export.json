@@ -1,7 +1,7 @@
 {
   "realm": "home",
   "enabled": true,
-  "sslRequired": "external",
+  "sslRequired": "all",
   "registrationAllowed": false,
   "webAuthnPolicy": {
     "rpEntityName": "CJSSolutions",

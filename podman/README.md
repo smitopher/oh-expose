@@ -70,3 +70,31 @@ periodically to avoid expiration:
    ```
 
 3. Restart the affected services so they load the new certificates.
+
+## End-to-End HTTPS
+
+Secure traffic to OpenHAB and Keycloak by running all requests through a
+Cloudflare Tunnel that terminates at the Nginx reverse proxy:
+
+1. Create DNS records in Cloudflare for the desired hostnames and
+   configure `cloudflared/config.yml` so each hostname maps to the Nginx
+   service over HTTPS.
+2. Provide valid certificates for Nginx (for example from Let's Encrypt
+   or mkcert) under `/etc/letsencrypt`.
+3. In the Cloudflare dashboard set the SSL/TLS mode to **Full (strict)**
+   so Cloudflare validates the Nginx certificate.
+4. Start the `nginx` and `cloudflared` services. Requests to the public
+   hostnames are now encrypted from the client through Cloudflare to
+   Nginx.
+
+## OpenHAB with Keycloak Authentication
+
+OpenHAB can delegate authentication to Keycloak using OpenID Connect.
+
+1. Import the provided Keycloak realm and ensure the `openhab` client
+   includes your public redirect URI.
+2. Configure OpenHAB to use OIDC by pointing it at the Keycloak realm
+   (issuer URL, client ID, and client secret). This can be done through
+   environment variables or by editing `runtime.cfg`.
+3. Restart OpenHAB. Users accessing the UI will be redirected to
+   Keycloak to log in before being returned to OpenHAB.

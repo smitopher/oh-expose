@@ -6,9 +6,7 @@ Image=postgres:16
 AutoUpdate=registry
 Network=internal-net
 Volume=pgdata:/var/lib/postgresql/data:Z
-Environment=POSTGRES_DB=keycloak
-Environment=POSTGRES_USER=keycloak
-Environment=POSTGRES_PASSWORD=change_me
+EnvironmentFile=%d/postgres.env
 
 [Install]
 WantedBy=multi-user.target

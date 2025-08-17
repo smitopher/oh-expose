@@ -1,0 +1,19 @@
+[Unit]
+Description=Keycloak container
+
+[Container]
+Image=quay.io/keycloak/keycloak:latest
+AutoUpdate=registry
+Network=internal-net
+Volume=keycloak-data:/opt/keycloak/data
+Environment=KC_PROXY=edge
+Environment=KC_HOSTNAME=keycloak.cjssolutions.com
+Environment=KC_HTTP_PORT=8080
+Environment=KC_DB=postgres
+Environment=KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
+Environment=KC_DB_USERNAME=keycloak
+Environment=KC_DB_PASSWORD=change_me
+Command=start --optimized
+
+[Install]
+WantedBy=multi-user.target

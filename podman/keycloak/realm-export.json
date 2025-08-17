@@ -1,0 +1,39 @@
+{
+  "realm": "home",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "webAuthnPolicy": {
+    "rpEntityName": "CJSSolutions",
+    "rpId": "cjssolutions.com",
+    "signatureAlgorithms": ["ES256"],
+    "attestationConveyancePreference": "not specified",
+    "authenticatorAttachment": "not specified",
+    "requireResidentKey": "No",
+    "userVerificationRequirement": "required"
+  },
+  "clients": [
+    {
+      "clientId": "openhab",
+      "publicClient": true,
+      "redirectUris": [
+        "https://openhab.cjssolutions.com/*"
+      ]
+    },
+    {
+      "clientId": "pgadmin",
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "https://pgadmin.cjssolutions.com/*"
+      ]
+    },
+    {
+      "clientId": "cloudflared",
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "clientAuthenticatorType": "client-secret"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+[Unit]
+Description=pgAdmin management UI
+
+[Container]
+Image=dpage/pgadmin4:latest
+AutoUpdate=registry
+Network=internal-net
+Volume=pgadmin-data:/var/lib/pgadmin
+Environment=PGADMIN_DEFAULT_EMAIL=admin@cjssolutions.com
+Environment=PGADMIN_DEFAULT_PASSWORD=change_me
+
+[Install]
+WantedBy=multi-user.target

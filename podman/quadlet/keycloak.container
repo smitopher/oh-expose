@@ -7,6 +7,7 @@ AutoUpdate=registry
 Network=internal-net
 Volume=keycloak-data:/opt/keycloak/data
 Volume=/etc/letsencrypt:/etc/letsencrypt:ro
+Volume=/etc/oh-expose/clients/keycloak:/etc/oh-expose/clients/keycloak:ro
 EnvironmentFile=%d/keycloak.env
 Command=start --optimized
 

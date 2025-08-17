@@ -10,8 +10,8 @@
       "ConnectionParameters": {
         "sslmode": "verify-full",
         "sslrootcert": "/etc/letsencrypt/live/cjssolutions.com/fullchain.pem",
-        "sslcert": "/etc/letsencrypt/live/cjssolutions.com/cert.pem",
-        "sslkey": "/etc/letsencrypt/live/cjssolutions.com/privkey.pem"
+        "sslcert": "/etc/oh-expose/clients/pg-admin/client.crt",
+        "sslkey": "/etc/oh-expose/clients/pg-admin/client.key"
       }
     }
   }

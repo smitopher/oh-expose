@@ -1,0 +1,14 @@
+---
+tunnel: YOUR-TUNNEL-ID
+credentials-file: /etc/cloudflared/YOUR-TUNNEL-ID.json
+
+ingress:
+  - hostname: openhab.cjssolutions.com
+    service: https://nginx:443
+  - hostname: keycloak.cjssolutions.com
+    service: https://nginx:443
+  - hostname: pgadmin.cjssolutions.com
+    service: https://nginx:443
+  - hostname: postgres.cjssolutions.com
+    service: tcp://nginx:5432
+  - service: http_status:404

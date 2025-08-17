@@ -1,0 +1,15 @@
+[Unit]
+Description=Nginx reverse proxy
+After=keycloak.service postgres.service pgadmin.service
+
+[Container]
+Image=nginx:alpine
+AutoUpdate=registry
+Network=internal-net
+PublishPort=80:80
+PublishPort=443:443
+Volume=nginx-config:/etc/nginx/conf.d:Z
+Volume=/etc/letsencrypt:/etc/letsencrypt:ro
+
+[Install]
+WantedBy=multi-user.target

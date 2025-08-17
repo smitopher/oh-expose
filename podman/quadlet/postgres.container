@@ -1,0 +1,14 @@
+[Unit]
+Description=PostgreSQL database
+
+[Container]
+Image=postgres:16
+AutoUpdate=registry
+Network=internal-net
+Volume=pgdata:/var/lib/postgresql/data:Z
+Environment=POSTGRES_DB=keycloak
+Environment=POSTGRES_USER=keycloak
+Environment=POSTGRES_PASSWORD=change_me
+
+[Install]
+WantedBy=multi-user.target

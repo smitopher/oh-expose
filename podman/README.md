@@ -2,7 +2,8 @@
 
 This directory contains a sample Podman configuration for running
 OpenHAB together with supporting services such as Keycloak, Postgres,
-pgAdmin, Nginx, and a Cloudflare Tunnel.  The services are managed with
+pgAdmin, optional Nginx reverse proxy, and a Cloudflare Tunnel.  The
+services are managed with
 [systemd quadlet](https://docs.podman.io/en/latest/markdown/podman.systemd.unit.html)
 units so that each container can be controlled with `systemctl` like a
 regular service.
@@ -25,23 +26,40 @@ Follow the steps below to stand up the stack on a new host.
 
    ```bash
    sudo systemctl daemon-reload
-   sudo systemctl enable --now nginx.service keycloak.service postgres.service pgadmin.service
+   sudo systemctl enable --now keycloak.service postgres.service
+   # Optional services if you also want Nginx or pgAdmin
+   sudo systemctl enable --now nginx.service pgadmin.service
    ```
 
 3. **Configure the Cloudflare tunnel**
 
-   Install `cloudflared` via `apt`, place `cloudflared/config.yml` at
-   `/etc/cloudflared/config.yml`, and start the tunnel:
+   Install `cloudflared` via `apt`, create a new tunnel in your
+   Cloudflare account, and place an updated copy of
+   `cloudflared/config.yml` at `/etc/cloudflared/config.yml`. The sample
+   configuration routes `keycloak.cjssolutions.com` directly to the
+   Keycloak container listening on port 8080. Review the active
+   configuration and credentials to confirm they match your tunnel:
+
+   ```bash
+   sudo cat /etc/cloudflared/config.yml
+   sudo ls /etc/cloudflared/*.json
+   ```
+
+   When the service has been disabled previously, re-enable it after the
+   configuration is updated:
 
    ```bash
    sudo systemctl enable --now cloudflared
+   sudo systemctl status cloudflared
    ```
 
-4. **Provide TLS certificates**
+4. **Provide TLS certificates (optional)**
 
-   Mount your Let's Encrypt or mkcert certificates at `/etc/letsencrypt`
-   on the host so they are available to the Nginx, Keycloak, and pgAdmin
-   containers.
+   If you plan to run the Nginx or pgAdmin containers, mount your Let's
+   Encrypt or mkcert certificates at `/etc/letsencrypt` on the host so
+   they are available to those services. Keycloak can be exposed through
+   Cloudflare without Nginx by using the HTTP origin in the tunnel
+   configuration.
 
 5. **Adjust configuration**
 
@@ -71,10 +89,26 @@ periodically to avoid expiration:
 
 3. Restart the affected services so they load the new certificates.
 
-## End-to-End HTTPS
+## Expose Keycloak with Cloudflare (no Nginx)
 
-Secure traffic to OpenHAB and Keycloak by running all requests through a
-Cloudflare Tunnel that terminates at the Nginx reverse proxy:
+If only the Keycloak container is running, you can publish it directly
+through a Cloudflare Tunnel:
+
+1. Create a DNS record such as `keycloak.cjssolutions.com` that points to
+   the tunnel you created for Keycloak.
+2. Copy `cloudflared/config.yml` to `/etc/cloudflared/config.yml` and
+   replace the placeholder tunnel ID and credentials file name with the
+   values from your Cloudflare account. The provided example maps the
+   hostname straight to `http://keycloak:8080` on the Podman network.
+3. Start (or restart) the `cloudflared` service. External requests will
+   be proxied from Cloudflare to the Keycloak container without the
+   intermediate Nginx layer.
+
+## End-to-End HTTPS via Nginx
+
+If you prefer to terminate TLS with Nginx before requests reach other
+services, keep the Nginx container running and update the tunnel
+configuration accordingly:
 
 1. Create DNS records in Cloudflare for the desired hostnames and
    configure `cloudflared/config.yml` so each hostname maps to the Nginx

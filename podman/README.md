@@ -71,6 +71,41 @@ Follow the steps below to stand up the stack on a new host.
    Import `keycloak/realm-export.json` into Keycloak to preconfigure
    clients and WebAuthn policy.
 
+## Renewing Let's Encrypt Wildcard Certificates
+
+When the wildcard certificate that secures Keycloak expires, browsers on
+your home network will block access until it is refreshed. Because the
+Podman stack does not expose port 80 on the public Internet, renew the
+certificate with a DNS challenge instead of HTTP-01:
+
+1. Check the current expiry date so you know whether the renewal
+   succeeded:
+
+   ```bash
+   sudo openssl x509 -noout -dates \
+     -in /etc/letsencrypt/live/<domain>/fullchain.pem
+   ```
+
+2. Request a new wildcard certificate with Certbot using your DNS
+   provider plugin (Cloudflare shown here). Include both the apex and
+   wildcard hostnames so services such as Keycloak continue to validate:
+
+   ```bash
+   sudo certbot certonly --dns-cloudflare \
+     --dns-cloudflare-credentials ~/.secrets/certbot/cloudflare.ini \
+     -d "example.com" -d "*.example.com"
+   ```
+
+3. Replace the certificate and key files that are mounted into the
+   containers. For the sample quadlet units this means updating the
+   files under `/etc/letsencrypt/live/<domain>/` so Nginx or any other
+   TLS-terminating service picks up the new material.
+
+4. Restart the services that consume the certificate. Keycloak reloads
+   the renewed wildcard certificate after `sudo systemctl restart
+   nginx` (when using the reverse proxy) or after restarting any other
+   service that presents TLS to clients on your network.
+
 ## Renewing mkcert Certificates
 
 If you use [mkcert](https://github.com/FiloSottile/mkcert) to create
